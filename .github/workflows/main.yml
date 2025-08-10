@@ -91,7 +91,7 @@ jobs:
           # Для каждого пересобранного образа 
           # устанавливаем тег latest, чтобы потом
           # на сервере и в docker-compose.yml не указывать версию
-          tags: weradot/taski_backend:latest
+          tags: weradot/taski_backend:latest,weradot/taski_backend:${{ github.sha }}
 
 
 
@@ -140,7 +140,8 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: weradot/taski_frontend:latest
+          tags: weradot/taski_frontend:latest,weradot/taski_frontend:${{ github.sha }}
+          
 
 
 
@@ -164,7 +165,8 @@ jobs:
           context: ./gateway/
           push: true
           # Тут вместо username должен быть ваш логин на Docker Hub
-          tags: weradot/taski_gateway:latest
+          tags: weradot/taski_gateway:latest,weradot/taski_gateway:${{ github.sha }}
+          
 
 
 
