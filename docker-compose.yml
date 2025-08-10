@@ -22,11 +22,11 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     
-    healthcheck:
-    test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
-    interval: 5s
-    timeout: 3s
-    retries: 5
+    # healthcheck:
+    # test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+    # interval: 5s
+    # timeout: 3s
+    # retries: 5
 
   # Имя и описание контейнера с бэкендом
   backend:
@@ -38,6 +38,9 @@ services:
     #   - db
     volumes:
       - static:/backend_static
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
   # Имя третьего контейнера. Это контейнер с фронтендом
   frontend:
     env_file: .env
@@ -45,9 +48,6 @@ services:
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
-    depends_on:
-      db:
-        condition: service_healthy
 
   # Добавляем новый контейнер: gateway
   gateway:
