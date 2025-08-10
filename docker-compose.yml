@@ -21,6 +21,13 @@ services:
     # Какой volume подключить для этого контейнера
     volumes:
       - pg_data:/var/lib/postgresql/data
+    
+    healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+    interval: 5s
+    timeout: 3s
+    retries: 5
+
   # Имя и описание контейнера с бэкендом
   backend:
     # Из какого Dockerfile собирать образ для этого контейнера:
@@ -38,6 +45,9 @@ services:
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
+    depends_on:
+      db:
+        condition: service_healthy
 
   # Добавляем новый контейнер: gateway
   gateway:
